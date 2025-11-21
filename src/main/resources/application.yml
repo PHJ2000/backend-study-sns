@@ -5,7 +5,13 @@ spring:
     username: sa
     password:
   jpa:
-    hibernate.ddl-auto: update
+    hibernate:
+      ddl-auto: update
     show-sql: true
   h2:
-    console.enabled: true
+    console:
+      enabled: true
+
+jwt:
+  secret: zwKNCyglJK435Wj0ylqi/KF5xubUPnzYOQj8Jkl9QWxea4xj100mCRA9tNXjldjvDaQWo9neQCutSAjNd+N4uw==
+  access-token-validity-in-seconds: 3600

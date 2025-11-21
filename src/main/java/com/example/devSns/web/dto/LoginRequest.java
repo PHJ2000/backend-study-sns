@@ -2,9 +2,7 @@ package com.example.devSns.web.dto;
 
 import jakarta.validation.constraints.NotBlank;
 
-public record MemberCreateRequest(
+public record LoginRequest(
         @NotBlank String username,
-        @NotBlank String password,
-        String nickname,
-        String bio
+        @NotBlank String password
 ) {}

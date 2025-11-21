@@ -22,11 +22,15 @@ public class MemberController {
         this.memberService = memberService;
     }
 
-    /** 멤버 생성 */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public MemberResponse create(@Valid @RequestBody MemberCreateRequest req) {
-        Member m = memberService.create(req.username(), req.nickname(), req.bio());
+        Member m = memberService.create(
+                req.username(),
+                req.password(),
+                req.nickname(),
+                req.bio()
+        );
         return MemberResponse.from(m);
     }
 

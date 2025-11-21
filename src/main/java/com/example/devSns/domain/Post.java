@@ -14,18 +14,29 @@ public class Post {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // ★ 작성자(Member) 연결 (nullable=true 로 두어서 기존 기능 안 깨지게)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member author;
+
     @NotBlank
-    @Column(nullable = false)
+    @Column(nullable = false, length = 100)
     private String title;
 
-    @Lob
+    @Column(columnDefinition = "TEXT")
     private String content;
 
+    // 댓글
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private final List<Comment> comments = new ArrayList<>();
 
+    // 좋아요
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    private final List<PostLike> likes = new ArrayList<>();
+
     @Builder
-    private Post(String title, String content) {
+    private Post(Member author, String title, String content) {
+        this.author = author;
         this.title = title;
         this.content = content;
     }
@@ -35,11 +46,16 @@ public class Post {
         this.content = content;
     }
 
+    public void changeAuthor(Member author) {
+        this.author = author;
+    }
+
     /** 양방향 편의 메서드 */
     void addComment(Comment c) {
         comments.add(c);
         c.setPostInternal(this);
     }
+
     void removeComment(Comment c) {
         comments.remove(c);
         c.setPostInternal(null);

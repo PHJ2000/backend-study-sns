@@ -15,21 +15,32 @@ public class Comment {
     @Column(nullable = false)
     private String content;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    /** 어느 Post 에 달린 댓글인지 */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "post_id", nullable = false)
     private Post post;
 
+    /** 누가 쓴 댓글인지 */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member author;
+
     @Builder
-    private Comment(String content, Post post) {
+    private Comment(String content, Post post, Member author) {
         this.content = content;
         this.post = post;
+        this.author = author;
     }
 
     public void update(String content) {
         this.content = content;
     }
 
-    /** Post 편의 메서드에서만 설정하도록 제한 */
     void setPostInternal(Post post) {
         this.post = post;
+    }
+
+    public void changeAuthor(Member author) {
+        this.author = author;
     }
 }

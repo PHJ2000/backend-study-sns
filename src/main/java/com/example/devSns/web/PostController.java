@@ -22,22 +22,27 @@ public class PostController {
     }
 
     @GetMapping
-    public List<PostResponse> getAll() {
+    public List<PostResponse> list() {
         return svc.findAll().stream().map(PostResponse::from).toList();
     }
 
     @GetMapping("/{id}")
-    public PostResponse getOne(@PathVariable Long id) {
+    public PostResponse get(@PathVariable Long id) {
         Post p = svc.findById(id);
         return PostResponse.from(p);
     }
 
-    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public PostResponse create(@Valid @RequestBody PostCreateRequest req) {
-        Post saved = svc.create(req.title(), req.content());
-        return PostResponse.from(saved);
+        Post created = svc.create(
+                req.memberId(),
+                req.title(),
+                req.content()
+        );
+        return PostResponse.from(created);
     }
+
 
     @PutMapping("/{id}")
     public PostResponse update(@PathVariable Long id, @Valid @RequestBody PostUpdateRequest req) {

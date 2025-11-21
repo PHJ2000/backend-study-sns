@@ -33,7 +33,13 @@ public class CommentController {
     @PostMapping
     public CommentResponse create(@PathVariable Long postId,
                                   @Valid @RequestBody CommentCreateRequest req) {
-        return CommentResponse.from(svc.create(postId, req.content()));
+        return CommentResponse.from(
+                svc.create(
+                        postId,
+                        req.memberId(),
+                        req.content()
+                )
+        );
     }
 
     @PutMapping("/{commentId}")
